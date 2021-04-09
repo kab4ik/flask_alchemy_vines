@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+In vino Veritas
+{% endblock %}
+
+
+{% block header %}
+Лучшие вина для лучших людей
+{% endblock %}
+
+{% block content %}
+<div class="col-2">
+	<a href="{{ url_for('index', sort_type='byname') }}">по названию</a><br><hr>
+	<a href="{{ url_for('index', sort_type='bypricelow') }}">от дешевых к дорогим </a><br><hr>
+	<a href="{{ url_for('index', sort_type='bypricehigh') }}">от дорогих к дешевым  </a><br><hr>
+	<a href="{{ url_for('index', sort_type='byproducer') }}">по производителю  </a>
+
+
+</div>
+<div class="col-10">
+{% for vine in vines %}
+<div class="row border mb-1">
+	{% set picture = 'red.png' if 'красное' in vine.sort.name else 'white.png' %}
+	<div class="col-1">
+		<img class="img-fluid"
+			 src="{{ url_for('static', filename='img/' + picture) }}">
+	</div>
+	<div class="col-3">
+		<p><a href="{{ url_for('vine', pk=vine.id) }}"> {{ vine }}</a></p>
+	</div>
+	<div class="col-3">
+	<p>{{ vine.producer }}</p><br>	
+	</div>
+	<div class="col-3">
+	<p>{{ vine.sort }}</p><br>	
+	</div>
+	<div class="col-2">
+	<p>{{ '%.2f'|format(vine.price) }} грн.</p><br>
+	</div>
+</div>
+{% endfor %}
+</div>
+
+
+{% endblock %}
